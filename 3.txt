@@ -1,0 +1,186 @@
+import subprocess
+import os
+from colorama import Fore, Style
+import shutil
+if RVC == "1":
+    # Install packages
+    # Mainline
+    subprocess.run(['apt-get', '-y', 'install', 'build-essential', 'python3-dev', 'ffmpeg'])
+    subprocess.run(['pip', 'install', '--upgrade', 'setuptools', 'wheel', 'pip'])
+    subprocess.run(['pip', 'install', '--upgrade', 'faiss-cpu==1.7.2', 'fairseq', 'gradio==3.14.0', 'ffmpeg', 'ffmpeg-python', 'praat-parselmouth', 'pyworld', 'numba==0.56.4'])
+    subprocess.run(['pip', 'install', 'torch', 'torchvision', 'torchaudio'])
+
+    # Install additional packages
+    subprocess.run(['pip', 'install', 'sounddevice'])
+    subprocess.run(['apt-get', 'install', 'libportaudio2'])
+    subprocess.run(['pip', 'install', 'noisereduce'])
+    subprocess.run(['pip', 'install', 'pyngrok'])
+    subprocess.run(['pip', 'install', 'tensorflow'])
+    subprocess.run(['pip', 'install', 'av'])
+
+    # Clear output
+    subprocess.run(['clear'])
+
+	
+    subprocess.run(['sed','-i','/joblib/d','requirements.txt'])
+    subprocess.run(['sed','-i','/numba==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/librosa==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/llvmlite==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/fairseq==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/faiss-cpu==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/pydubd/d','requirements.txt'])
+    subprocess.run(['sed','-i','/soundfile/d','requirements.txt'])
+    subprocess.run(['sed','-i','/ffmpeg-python/d','requirements.txt'])
+    subprocess.run(['sed','-i','/tensorboardX/d','requirements.txt'])
+    subprocess.run(['sed','-i','/Jinja2/d','requirements.txt'])
+    subprocess.run(['sed','-i','/matplotlib/d','requirements.txt'])
+    subprocess.run(['sed','-i','/matplotlib-inline/d','requirements.txt'])
+    subprocess.run(['sed','-i','/praat-parselmouth/d','requirements.txt'])
+    subprocess.run(['sed','-i','/Pillow/d','requirements.txt'])
+    subprocess.run(['sed','-i','/tensorboard/d','requirements.txt'])
+    subprocess.run(['sed','-i','/tqdm/d','requirements.txt'])
+    subprocess.run(['sed','-i','/pyworld==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/fastapi==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/python-dotenv/d','requirements.txt'])
+    
+    # Install remaining packages from requirements.txt
+    subprocess.run(['pip', 'install', '-r', 'requirements.txt'])
+    subprocess.run(['python', 'tools/download_models.py'])
+
+if RVC == "2":
+	# Mangio Tweaks
+
+    # Install packages
+    subprocess.run(['apt-get', '-y', 'install', 'build-essential', 'python3-dev', 'ffmpeg', 'torchcrepe'])
+    subprocess.run(['pip3', 'install', '--upgrade', 'setuptools', 'wheel', 'pip'])
+    subprocess.run(['pip3', 'install', '--upgrade', 'faiss-cpu==1.7.2', 'fairseq', 'gradio==3.14.0', 'ffmpeg', 'ffmpeg-python', 'praat-parselmouth', 'pyworld', 'numba==0.56.4', 'onnxruntime'])
+    subprocess.run(['pip3', 'install', 'torch', 'torchvision', 'torchaudio'])
+
+    # Install additional packages
+    subprocess.run(['pip', 'install', 'sounddevice'])
+    subprocess.run(['apt-get', 'install', 'libportaudio2'])
+    subprocess.run(['pip', 'install', 'noisereduce'])
+    subprocess.run(['pip', 'install', 'pyngrok'])
+    subprocess.run(['pip', 'install', 'tensorflow'])
+    subprocess.run(['pip', 'install', 'torchcrepe'])
+    
+    # Clear output
+    subprocess.run(['clear'])
+
+    subprocess.run(['sed','-i','/joblib/d','requirements.txt'])
+    subprocess.run(['sed','-i','/numba==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/librosa==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/llvmlite==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/fairseq==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/faiss-cpu==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/pydubd/d','requirements.txt'])
+    subprocess.run(['sed','-i','/soundfile/d','requirements.txt'])
+    subprocess.run(['sed','-i','/ffmpeg-python/d','requirements.txt'])
+    subprocess.run(['sed','-i','/tensorboardX/d','requirements.txt'])
+    subprocess.run(['sed','-i','/Jinja2/d','requirements.txt'])
+    subprocess.run(['sed','-i','/matplotlib/d','requirements.txt'])
+    subprocess.run(['sed','-i','/matplotlib-inline/d','requirements.txt'])
+    subprocess.run(['sed','-i','/praat-parselmouth/d','requirements.txt'])
+    subprocess.run(['sed','-i','/Pillow/d','requirements.txt'])
+    subprocess.run(['sed','-i','/tensorboard/d','requirements.txt'])
+    subprocess.run(['sed','-i','/tqdm/d','requirements.txt'])
+    subprocess.run(['sed','-i','/pyworld==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/fastapi==/d','requirements.txt'])
+    subprocess.run(['sed','-i','/python-dotenv/d','requirements.txt'])
+
+    # Install remaining packages from requirements.txt
+    subprocess.run(['pip', 'install', '-r', 'requirements.txt'])
+
+    # Download models.py
+    subprocess.run(['curl', '-o', '/kaggle/temp/HTweaks/custom/download_models.py', 'https://raw.githubusercontent.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/main/tools/download_models.py'])
+
+    # Copy models.py to tools directory
+    subprocess.run(['cp', '-f', '/kaggle/temp/HTweaks/custom/download_models.py', '/kaggle/temp/HTweaks/tools/'])
+
+    # Run download_models.py
+    subprocess.run(['python', 'tools/download_models.py'])
+
+    # Move Models
+    current_directory = os.getcwd()
+    shutil.copytree('assets/pretrained_v2', 'pretrained_v2', dirs_exist_ok=True)
+    shutil.copytree('assets/pretrained', 'pretrained', dirs_exist_ok=True)
+    shutil.copytree('assets/uvr5_weights', 'uvr5_weights', dirs_exist_ok=True)
+    shutil.copytree('assets/uvr5_weights/onnx_dereverb_By_FoxJoy', 'uvr5_weights', dirs_exist_ok=True)
+    shutil.copytree('assets/rmvpe', current_directory, dirs_exist_ok=True)
+    shutil.copytree('assets/hubert', current_directory, dirs_exist_ok=True)
+
+
+if RVC == "3":
+    # VoiceChanger
+    # Function to run shell commands
+    def run_command(command):
+        import os
+        os.system(command)
+
+    # Change directory to 'server'
+    os.chdir('server')
+
+    # Replace text in version.txt
+    with open('../client/demo/dist/assets/gui_settings/version.txt', 'r') as file:
+        file_content = file.read()
+        file_content = file_content.replace('-.-.-.-', 'Kaggle.Mod')
+
+    with open('../client/demo/dist/assets/gui_settings/version.txt', 'w') as file:
+        file.write(file_content)
+
+    # Rename MMVCServerSIO.py to Hmod.py
+    os.rename('MMVCServerSIO.py', 'Hmod.py')
+
+    # Replace text in Hmod.py
+    subprocess.run(['sed','-i','s/MMVCServerSIO/Hmod/','Hmod.py'])
+    with open('Hmod.py', 'r') as file:
+        file_content = file.read()
+        file_content = file_content.replace('MMVCServerSIO', 'Hmod')
+
+    with open('Hmod.py', 'w') as file:
+        file.write(file_content)
+
+    # Install libportaudio2
+    print(f"{Fore.CYAN}> Installing libportaudio2...{Style.RESET_ALL}")
+    run_command('apt-get -y install libportaudio2 -qq')
+
+    # Install additional dependencies
+    print(f"{Fore.CYAN}> Installing pre-dependencies...{Style.RESET_ALL}")
+    run_command('pip install faiss-gpu fairseq pyngrok --quiet')
+    run_command('pip install pyworld --no-build-isolation')
+
+    # Install dependencies from requirements.txt
+    print(f"{Fore.CYAN}> Installing dependencies from requirements.txt...{Style.RESET_ALL}")
+    run_command('pip install -r requirements.txt --quiet')
+
+    # Download the default settings
+    if not os.path.exists("/kaggle/temp/HVoice/server/stored_setting.json"):
+        run_command('wget -q https://gist.githubusercontent.com/Rafacasari/d820d945497a01112e1a9ba331cbad4f/raw/8e0a426c22688b05dd9c541648bceab27e422dd6/kaggle_setting.json -O /kaggle/temp/HVoice/server/stored_setting.json')
+
+    print(f"{Fore.GREEN}> Successfully installed all packages!{Style.RESET_ALL}")
+
+if RVC == "4":
+	# CoverGen
+    import subprocess
+    from IPython.display import clear_output
+
+    # Install requirements
+    os.chdir('src/configs')
+    subprocess.run(['pip', 'install', '-r', 'requirements.txt'])
+    subprocess.run(['pip', 'install', 'pyngrok'])
+    os.chdir('/kaggle/temp/HCover/')
+    clear_output()
+    print("Finished Installing Requirements")
+
+    # Update
+    subprocess.run(['sudo', 'apt', 'update', '-y'])
+    clear_output()
+    print("Finished Updating")
+
+    # Install sox
+    subprocess.run(['sudo', 'apt', 'install', 'sox', '-y'])
+    clear_output()
+    print("Finished running this cell, proceed to the next cell")
+    subprocess.run(['python', 'src/download_models.py'])
+
+print("Finished Running cell, continue to next cell.")

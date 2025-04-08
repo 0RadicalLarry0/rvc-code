@@ -1,0 +1,179 @@
+import os
+import subprocess
+import shutil
+from distutils.dir_util import copy_tree
+
+if RVC == "1":
+    # Mainline
+    branch_name = 'main'
+    url = 'https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI'
+    try:
+        subprocess.run(["git", "clone", "-b", branch_name, "--single-branch", "--depth", "1", url, "."], check=True)
+        print("Git clone successful")
+    except subprocess.CalledProcessError as e:
+        print(f"Error during Git clone: {e}")
+    os.makedirs("custom", exist_ok=True)
+
+    # Move logs and weights to /kaggle/working/
+    sourceLogs = "/kaggle/temp/HMainline/logs"
+    destinationLogs = "/kaggle/working/logs"
+    shutil.move(sourceLogs, destinationLogs)
+
+    sourceWeights = "/kaggle/temp/HMainline/assets/weights"
+    destinationWeights = "/kaggle/working/weights"
+    shutil.move(sourceWeights, destinationWeights)
+
+    #Create symbolic links
+    os.symlink(destinationLogs, sourceLogs, True)
+    os.symlink(destinationWeights, sourceWeights, True)
+
+    if Continue_Training:
+        print("CONTINUE TRAINING IS ENABLED")
+        print("Moving logs...")
+        # Move input to logs
+        copy_tree("/kaggle/input/", "/kaggle/temp/HMainline/logs/")
+        print("Logs have been moved")
+
+    if Override:
+        # Change Config
+        if Gui_Change == "2":
+            os.system('curl -o /kaggle/temp/HMainline/custom/32k.json https://raw.githubusercontent.com/hinabl/rmvpe-ai-kaggle/main/custom/32k.json')
+            os.system('curl -o /kaggle/temp/HMainline/custom/48k.json https://raw.githubusercontent.com/hinabl/rmvpe-ai-kaggle/main/custom/48k.json')
+        elif Gui_Change == "3":
+            os.system('curl -o /kaggle/temp/HMainline/custom/32k.json https://raw.githubusercontent.com/0RadicalLarry0/MainlineRVC-Raven/main/configs/v2/32k.json')
+            os.system('curl -o /kaggle/temp/HMainline/custom/40k.json https://raw.githubusercontent.com/0RadicalLarry0/MainlineRVC-Raven/main/configs/v2/40k.json')
+            os.system('curl -o /kaggle/temp/HMainline/custom/48k.json https://raw.githubusercontent.com/0RadicalLarry0/MainlineRVC-Raven/main/configs/v2/48k.json')
+            os.system('curl -o /kaggle/temp/HMainline/custom/slicer2.py https://raw.githubusercontent.com/0RadicalLarry0/MainlineRVC-Raven/main/infer/lib/slicer2.py')
+            os.system('curl -o /kaggle/temp/HMainline/custom/preprocess.py https://raw.githubusercontent.com/0RadicalLarry0/MainlineRVC-Raven/main/infer/modules/train/preprocess.py')
+
+        # os.system('curl -o /kaggle/temp/HMainline/custom/download_models.py https://raw.githubusercontent.com/hinabl/rmvpe-ai-kaggle/main/custom/download_models.py')
+        os.system('curl -o /kaggle/temp/HMainline/custom/train.py https://raw.githubusercontent.com/hinabl/rmvpe-ai-kaggle/main/custom/train.py')
+        os.system('curl -o /kaggle/temp/HMainline/custom/requirements.txt https://raw.githubusercontent.com/hinabl/rmvpe-ai-kaggle/main/custom/requirements.txt')
+
+        if Gui_Change == "3":
+            os.system('cp -f /kaggle/temp/HMainline/custom/40k.json /kaggle/temp/HMainline/configs/v2/40k.json')
+            os.system('cp -f /kaggle/temp/HMainline/custom/slicer2.py /kaggle/temp/HMainline/infer/lib/slicer2.py')
+            os.system('cp -f /kaggle/temp/HMainline/custom/preprocess.py /kaggle/temp/HMainline/infer/modules/train/preprocess.py')
+        os.system('cp -f /kaggle/temp/HMainline/custom/32k.json /kaggle/temp/HMainline/configs/v2/32k.json')
+        os.system('cp -f /kaggle/temp/HMainline/custom/48k.json /kaggle/temp/HMainline/configs/v2/48k.json')
+        os.system('cp -f /kaggle/temp/HMainline/custom/download_models.py /kaggle/temp/HMainline/tools/download_models.py')
+        # os.system('cp -f /kaggle/temp/HMainline/custom/train.py /kaggle/temp/HMainline/infer/modules/train/')  # Uncomment if needed
+        os.system('cp -f /kaggle/temp/HMainline/custom/requirements.txt /kaggle/temp/HMainline/')
+
+    if Gui_Change == "1":
+        os.system('curl -o /kaggle/temp/HMainline/custom/infer-web.py https://raw.githubusercontent.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/main/infer-web.py')
+        os.system('cp -f /kaggle/temp/content/HMainline/infer-web.py /kaggle/temp/HMainline/')
+    elif Gui_Change == "2":
+        os.system('curl -o /kaggle/temp/HMainline/custom/infer-web.py https://raw.githubusercontent.com/hinabl/rmvpe-ai-kaggle/main/custom/infer-web.py')
+        os.system('cp -f /kaggle/temp/HMainline/custom/infer-web.py /kaggle/temp/HMainline/')
+    elif Gui_Change == "3":
+        os.system('curl -o /kaggle/temp/HMainline/custom/infer-web.py https://raw.githubusercontent.com/0RadicalLarry0/MainlineRVC-Raven/main/RavenUI.py')
+        os.system('cp -f /kaggle/temp/HMainline/custom/infer-web.py /kaggle/temp/HMainline/')
+
+    # Rename infer-web.py to runmain.py
+    if not os.path.exists("runmain.py"):
+        os.rename("infer-web.py", "runmain.py")
+        print("File renamed.")
+    else:
+        print("runmain.py already exists. Skipping rename.")
+
+    # Clear output
+    os.system('clear')
+
+    # Display messages
+    if Override:
+        print("Override Enabled")
+    else:
+        print("Override Disabled")
+
+    if Gui_Change == "1":
+        print("Using Default GUI")
+    elif Gui_Change == "2":
+        print("Using Hina + Raven GUI")
+    elif Gui_Change == "3":
+        print("Using Raven GUI")
+
+elif RVC == "2":
+    # Mangio Tweaks
+    url = 'https://github.com/alexlnkp/Mangio-RVC-Tweaks.git'
+    try:
+        subprocess.run(["git", "clone", "--single-branch", "--depth", "1", url, "."], check=True)
+        print("Git clone successful")
+    except subprocess.CalledProcessError as e:
+        print(f"Error during Git clone: {e}")
+
+    # Create custom directory
+    os.makedirs("custom", exist_ok=True)
+
+    # Modify infer-web.py
+    file_to_modify = "runmain.py"
+
+    if not os.path.exists(file_to_modify):
+        file_to_modify = "infer-web.py"
+
+    with open(file_to_modify, "r") as file:
+        content = file.read()
+
+    content = content.replace('theme=gr.themes.Soft(),', '')
+    content = content.replace('sid0.select', 'sid0.change')
+    content = content.replace('gr.HTML("<h1> The Mangio-RVC-Fork 💻 </h1>")', 'gr.Markdown("<h1><center> The Mangio-RVC-Fork 💻 </h1>")')
+    content = content.replace('quiet=False', 'quiet=True')
+
+    with open(file_to_modify, "w") as file:
+        file.write(content)
+
+    print(f"Modified {file_to_modify}.")
+
+    # Override configuration
+    if Override:
+        os.system('curl -o /kaggle/temp/HTweaks/custom/32k.json https://raw.githubusercontent.com/hinabl/rmvpe-ai-kaggle/main/custom/32k.json')
+        os.system('curl -o /kaggle/temp/HTweaks/custom/48k.json https://raw.githubusercontent.com/hinabl/rmvpe-ai-kaggle/main/custom/48k.json')
+        # os.system('curl -o /kaggle/temp/HTweaks/custom/download_models.py https://raw.githubusercontent.com/hinabl/rmvpe-ai-kaggle/main/custom/download_models.py')
+        os.system('curl -o /kaggle/temp/HTweaks/custom/download_models.py https://raw.githubusercontent.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/main/tools/download_models.py')
+        os.system('curl -o /kaggle/temp/HTweaks/custom/train.py https://raw.githubusercontent.com/hinabl/rmvpe-ai-kaggle/main/custom/train.py')
+        os.system('curl -o /kaggle/temp/HTweaks/custom/requirements.txt https://raw.githubusercontent.com/hinabl/rmvpe-ai-kaggle/main/custom/requirements.txt')
+
+        os.system('cp -f /kaggle/temp/HTweaks/custom/32k.json /kaggle/temp/HTweaks/configs/v2/32k.json')
+        os.system('cp -f /kaggle/temp/HTweaks/custom/48k.json /kaggle/temp/HTweaks/configs/v2/48k.json')
+        os.system('cp -f /kaggle/temp/HTweaks/custom/download_models.py /kaggle/temp/HTweaks/tools/download_models.py')
+
+    # Rename infer-web.py to runmain.py
+    if not os.path.exists("runmain.py"):
+        os.rename("infer-web.py", "runmain.py")
+        print("File renamed.")
+    else:
+        print("runmain.py already exists. Skipping rename.")
+
+    # Clear output
+    os.system('clear')
+
+    # Display messages
+    if Override:
+        print("Override Enabled")
+    else:
+        print("Override Disabled")
+
+    if Gui_Change == "1":
+        print("Using Default GUI")
+    elif Gui_Change == "2":
+        print("Using Hina + Raven GUI")
+    elif Gui_Change == "3":
+        print("Using Raven GUI")
+
+elif RVC == "3":
+    # VoiceChanger
+    url = 'https://github.com/w-okada/voice-changer.git'
+    try:
+        subprocess.run(["git", "clone", "--single-branch", "--depth", "1", url, "."], check=True)
+        print("Git clone successful")
+    except subprocess.CalledProcessError as e:
+        print(f"Error during Git clone: {e}")
+
+elif RVC == "4":
+    # CoverGen
+    url = 'https://github.com/hinabl/AICoverGen-Colab.git'
+    try:
+        subprocess.run(["git", "clone", "--depth", "1", url, "."], check=True)
+        print("Git clone successful")
+    except subprocess.CalledProcessError as e:
+        print(f"Error during Git clone: {e}")

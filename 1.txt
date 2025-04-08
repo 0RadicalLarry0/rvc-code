@@ -1,0 +1,26 @@
+import os
+os.chdir("/kaggle/")
+os.makedirs("temp", exist_ok=True)
+os.chdir("temp")
+if RVC == "1":
+    # Mainline RVC
+    os.makedirs("HMainline", exist_ok=True)
+    os.chdir("HMainline")
+    print("Made Directory for Mainline RVC")
+elif RVC == "2":
+    # Mangio Tweaks
+    os.makedirs("HTweaks", exist_ok=True)
+    os.chdir("HTweaks")
+    print("Made Directory for Mangio Tweaks")
+elif RVC == "3":
+    # VoiceChanger
+    os.makedirs("HVoice", exist_ok=True)
+    os.chdir("HVoice")
+    print("Made Directory for VoiceChanger")
+elif RVC == "4":
+    # CoverGen
+    os.makedirs("HCover", exist_ok=True)
+    os.chdir("HCover")
+    print("Made Directory for CoverGen")
+else:
+    print("Invalid choice")

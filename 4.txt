@@ -1,0 +1,163 @@
+import os
+import time
+import subprocess
+if RVC == "1":
+    # import os
+    # Mainline RVC
+    # Specify the main directory on Kaggle
+    # directory = '/kaggle/input/'
+    # import os
+    # folders = [f for f in os.listdir('/kaggle/input/') if os.path.isdir(os.path.join('/kaggle/input/', f))]
+    # import os
+    # folder_list = ' | '.join(folders)
+
+    from IPython.display import display, HTML
+    
+    log_directory = 'logs'
+    command = ['tensorboard', f'--logdir={log_directory}', '--port=8077', '--bind_all']
+    tensorboard_process = subprocess.Popen(command)
+
+    # %load_ext tensorboard
+    # %tensorboard --logdir logs --port 8077
+
+    clear_output()
+    subprocess.run(['pip', 'install', 'pyngrok'])
+    from pyngrok import ngrok
+
+    if Close_Ngrok:
+        ngrok.kill()
+
+    ngrok.set_auth_token(Ngrok_Token)
+
+    # Ngrok tunnel for the specified directory
+    file_tunnel = ngrok.connect("file:///kaggle/temp/HMainline", bind_tls=True)
+
+    # Ngrok tunnel for Tensorboard
+    main_tunnel = ngrok.connect(9303)
+    tens_tunnel = ngrok.connect(8077)
+
+    clear_output()
+
+    if Open_New_Tab==True:
+        display(Javascript('window.open("{url}", "_blank");'.format(url=main_tunnel.public_url)))
+        display(Javascript('window.open("{url}", "_blank");'.format(url=tens_tunnel.public_url)))
+        display(Javascript('window.open("{url}", "_blank");'.format(url=file_tunnel.public_url)))
+    
+    
+    subprocess.run(['pip', 'install', 'av'])
+    subprocess.run(['pip', 'install', 'faiss'])
+    clear_output()
+
+    print("RVC URL:", main_tunnel.public_url)
+    print("Tensorboard URL:", tens_tunnel.public_url)
+    print("File URL:", file_tunnel.public_url)
+
+    url_list=f"""
+    RVC URL: {main_tunnel.public_url} 
+    Tensorboard URL:{tens_tunnel.public_url}
+    File URL: {file_tunnel.public_url}
+    """
+    url_path = '/kaggle/temp/HMainline/urls.txt'
+    with open(url_path, 'w') as html_file:
+        html_file.write(url_list)
+
+
+    # print(f'Dataset files are located at: "/kaggle/input/{folder_list}"')
+    subprocess.run(['python3', 'runmain.py', '--port', '9303'])
+
+elif RVC == "2":
+    # Mangio Tweaks
+    directory = '/kaggle/input/' 
+    print("Directory:", directory)
+
+    folders = [f for f in __import__('os').listdir('/kaggle/input/') if __import__('os').path.isdir(__import__('os').path.join('/kaggle/input/', f))]
+    folder_list = ' | '.join(folders)
+
+    from pyngrok import ngrok
+    import threading
+    ngrok.set_auth_token(Ngrok_Token)
+    ngrok.kill()
+    main_tunnel = ngrok.connect(9303)
+    tens_tunnel = ngrok.connect(8077)
+    file_tunnel = ngrok.connect("file:///kaggle/temp/HTweaks", bind_tls=True)
+    
+    log_directory = 'logs'
+    command = ['tensorboard', f'--logdir={log_directory}', '--port=8077', '--bind_all']
+    tensorboard_process = subprocess.Popen(command)
+
+    # %load_ext tensorboard
+    # %tensorboard --logdir logs --port 8077
+
+
+    clear_output()
+    subprocess.run(['pip', 'install', 'torchcrepe'])
+    clear_output()
+    print("RVC URL:", main_tunnel.public_url)
+    print("Tensorboard URL:", tens_tunnel.public_url)
+    print("File URL:", file_tunnel.public_url)
+
+    subprocess.run(['python3', 'runmain.py', '--port', '9303'])
+
+elif RVC == "3":
+    # VoiceChanger
+    
+    import subprocess
+    import threading
+    import time
+    import socket
+    from pyngrok import conf, ngrok
+
+    # Change directory to /kaggle/temp/Hmod/server
+    os.chdir('/kaggle/temp/HVoice/server')
+
+    # Set up pyngrok configuration
+    MyConfig = conf.PyngrokConfig()
+    MyConfig.auth_token = Ngrok_Token
+    MyConfig.region = Region
+    conf.get_default().authtoken = Ngrok_Token
+    conf.get_default().region = Region
+    conf.set_default(MyConfig)
+
+    # Define constants
+    ngrok.kill() # reset
+    PORT = 9933
+
+    # Connect to ngrok
+    ngrokConnection = ngrok.connect(PORT)
+    public_url = ngrokConnection.public_url
+
+    print(public_url)
+
+    # # Start a thread to wait for the server
+    # threading.Thread(target=wait_for_server, daemon=True).start()
+
+    # Run Hmod.py
+    subprocess.run(['python3', 'Hmod.py',
+                    '-p', str(PORT),
+                    '--https', 'False',
+                    '--content_vec_500', 'pretrain/checkpoint_best_legacy_500.pt',
+                    '--content_vec_500_onnx', 'pretrain/content_vec_500.onnx',
+                    '--content_vec_500_onnx_on', 'true',
+                    '--hubert_base', 'pretrain/hubert_base.pt',
+                    '--hubert_base_jp', 'pretrain/rinna_hubert_base_jp.pt',
+                    '--hubert_soft', 'pretrain/hubert/hubert-soft-0d54a1f4.pt',
+                    '--nsf_hifigan', 'pretrain/nsf_hifigan/model',
+                    '--crepe_onnx_full', 'pretrain/crepe_onnx_full.onnx',
+                    '--crepe_onnx_tiny', 'pretrain/crepe_onnx_tiny.onnx',
+                    '--rmvpe', 'pretrain/rmvpe.pt',
+                    '--model_dir', 'model_dir',
+                    '--samples', 'samples.json'])
+
+    # Disconnect ngrok
+    ngrok.disconnect(ngrokConnection.public_url)
+
+
+elif RVC == "4":
+    # CoverGen
+    from pyngrok import conf, ngrok
+    ngrok.set_auth_token(Ngrok_Token)
+    if Close_Ngrok == True:
+        ngrok.kill()
+    cover_tunnel = ngrok.connect(9303)
+    print("CoverGen URL:", cover_tunnel.public_url)
+    subprocess.run(['python', 'src/webui.py', '--listen-port', '9303'])
