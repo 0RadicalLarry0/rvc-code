@@ -6,7 +6,7 @@ from distutils.dir_util import copy_tree
 if RVC == "1":
     # Mainline
     branch_name = 'main'
-    url = 'https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI'
+    url = 'https://github.com/0RadicalLarry0/rvc-webui-archive'
     try:
         subprocess.run(["git", "clone", "-b", branch_name, "--single-branch", "--depth", "1", url, "."], check=True)
         print("Git clone successful")
