@@ -44,7 +44,7 @@ if RVC == "1":
     subprocess.run(['sed','-i','/python-dotenv/d','requirements.txt'])
     
     # Install remaining packages from requirements.txt
-    subprocess.run(['pip', 'install', '-r', 'requirements.txt'])
+    subprocess.run(['pip', 'install', '-r', 'requirements.txt', '--use-deprecated=legacy-resolver'])
     subprocess.run(['python', 'tools/download_models.py'])
 
 if RVC == "2":
