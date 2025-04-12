@@ -8,7 +8,7 @@ if RVC == "1":
     subprocess.run(['pip', 'install', 'virtualenv'])
     subprocess.run(['virtualenv', 'venv'])
     subprocess.run(['apt-get', '-y', 'install', 'build-essential', 'python3-dev', 'ffmpeg'])
-    subprocess.run(['pip', 'install', 'setuptools', 'wheel', 'pip'])
+    subprocess.run(['pip', 'install', '--upgrade', 'setuptools', 'wheel', 'pip'])
     subprocess.run(['pip', 'install', 'faiss-cpu==1.7.2', 'fairseq', 'gradio==3.14.0', 'ffmpeg', 'ffmpeg-python', 'praat-parselmouth', 'pyworld', 'numba==0.56.4'])
     subprocess.run(['pip', 'install', 'torch', 'torchvision', 'torchaudio'])
 
