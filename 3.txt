@@ -6,9 +6,8 @@ if RVC == "1":
     # Install packages
     # Mainline
     subprocess.run(['apt-get', '-y', 'install', 'build-essential', 'python3-dev', 'ffmpeg'])
-    subprocess.run(['pip', 'install', 'pipenv'])
     os.remove('Pipfile.lock')
-    subprocess.run(['pipenv', 'update'])
+    subprocess.run(['pip', 'install', 'pipenv'])
     subprocess.run(['pipenv', 'install', 'setuptools', 'wheel', 'pip'])
     subprocess.run(['pipenv', 'install', 'faiss-cpu==1.7.2', 'fairseq', 'gradio==3.14.0', 'ffmpeg', 'ffmpeg-python', 'praat-parselmouth', 'pyworld', 'numba==0.56.4'])
     subprocess.run(['pipenv', 'install', 'torch', 'torchvision', 'torchaudio'])
