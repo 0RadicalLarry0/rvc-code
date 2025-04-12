@@ -5,7 +5,7 @@ import shutil
 if RVC == "1":
     # Install packages
     # Mainline
-    subprocess.run(['python', '-m', 'venv', 'new_env'], shell=True)
+    subprocess.run(['python', '-m', 'venv', 'new_env'])
     subprocess.run(['source', 'new_env/bin/activate'], shell=True)
     subprocess.run(['apt-get', '-y', 'install', 'build-essential', 'python3-dev', 'ffmpeg'])
     subprocess.run(['pip', 'install', 'setuptools', 'wheel', 'pip'])
