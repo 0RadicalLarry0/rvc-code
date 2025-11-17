@@ -10,9 +10,9 @@ if RVC == "1":
     subprocess.run(['pip', 'install', 'virtualenv'])
     subprocess.run(['virtualenv', 'venv'])
 
-	subprocess.run(['pip', 'install', 'backports.tarfile'])
-	# subprocess.run(['pip', 'install', '--upgrade', 'setuptools', 'jaraco.context'])
-	subprocess.run(['pip', 'install', 'scipy==1.10.1'])
+    subprocess.run(['pip', 'install', 'backports.tarfile'])
+    # subprocess.run(['pip', 'install', '--upgrade', 'setuptools', 'jaraco.context'])
+    subprocess.run(['pip', 'install', 'scipy==1.10.1'])
 
     subprocess.run(['apt-get', '-y', 'install', 'build-essential', 'python3-dev', 'ffmpeg'])
     # subprocess.run(['pip', 'install', '--upgrade', 'setuptools', 'wheel', 'pip'])
@@ -194,3 +194,4 @@ if RVC == "4":
 
 
 print("Finished Running cell, continue to next cell.")
+
