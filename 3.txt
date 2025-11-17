@@ -5,10 +5,17 @@ import shutil
 if RVC == "1":
     # Install packages
     # Mainline
+	subprocess.run(['apt-get', 'update', '--fix-missing'])
+
     subprocess.run(['pip', 'install', 'virtualenv'])
     subprocess.run(['virtualenv', 'venv'])
+
+	subprocess.run(['pip', 'install', 'backports.tarfile'])
+	# subprocess.run(['pip', 'install', '--upgrade', 'setuptools', 'jaraco.context'])
+	subprocess.run(['pip', 'install', 'scipy==1.10.1'])
+
     subprocess.run(['apt-get', '-y', 'install', 'build-essential', 'python3-dev', 'ffmpeg'])
-    subprocess.run(['pip', 'install', '--upgrade', 'setuptools', 'wheel', 'pip'])
+    # subprocess.run(['pip', 'install', '--upgrade', 'setuptools', 'wheel', 'pip'])
     subprocess.run(['pip', 'install', 'faiss-cpu==1.7.2', 'fairseq', 'gradio==3.14.0', 'ffmpeg', 'ffmpeg-python', 'praat-parselmouth', 'pyworld', 'numba==0.56.4'])
     subprocess.run(['pip', 'install', 'torch', 'torchvision', 'torchaudio'])
 
@@ -184,5 +191,6 @@ if RVC == "4":
     clear_output()
     print("Finished running this cell, proceed to the next cell")
     subprocess.run(['python', 'src/download_models.py'])
+
 
 print("Finished Running cell, continue to next cell.")
