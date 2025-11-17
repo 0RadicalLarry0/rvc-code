@@ -5,7 +5,7 @@ import shutil
 if RVC == "1":
     # Install packages
     # Mainline
-	subprocess.run(['apt-get', 'update', '--fix-missing'])
+    subprocess.run(['apt-get', 'update', '--fix-missing'])
 
     subprocess.run(['pip', 'install', 'virtualenv'])
     subprocess.run(['virtualenv', 'venv'])
@@ -194,4 +194,5 @@ if RVC == "4":
 
 
 print("Finished Running cell, continue to next cell.")
+
 
