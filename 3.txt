@@ -8,6 +8,14 @@ if RVC == "1":
 
     subprocess.run(['apt-get', 'update', '--fix-missing'])
 
+	subprocess.run([
+        "apt-get", "install", "-y",
+        "ffmpeg", "pkg-config",
+        "libavcodec-dev", "libavformat-dev", "libavutil-dev",
+        "libswscale-dev", "libswresample-dev",
+        "libavdevice-dev", "libavfilter-dev"
+    ], check=True)
+
     subprocess.run(['pip', 'install', 'virtualenv'])
     subprocess.run(['virtualenv', 'venv'])
 
@@ -67,7 +75,11 @@ if RVC == "1":
     # subprocess.run(['pip', 'install', 'torch', 'torchvision', 'torchaudio'])
     # subprocess.run(['pip', 'install', 'torchcrepe', 'resampy'])
 
-    subprocess.run(['pip', 'install', 'av==9.2.0', '--force-reinstall'])
+    subprocess.run([
+        "pip", "install", "av==9.2.0",
+        "--no-binary", "av",
+        "--force-reinstall"
+    ], check=True)
 
     subprocess.run(['python', 'tools/download_models.py'])
 
@@ -209,6 +221,7 @@ if RVC == "4":
 
 
 print("Finished Running cell, continue to next cell.")
+
 
 
 
