@@ -5,19 +5,25 @@ import shutil
 if RVC == "1":
     # Install packages
     # Mainline
+
     subprocess.run(['apt-get', 'update', '--fix-missing'])
 
     subprocess.run(['pip', 'install', 'virtualenv'])
     subprocess.run(['virtualenv', 'venv'])
 
-    subprocess.run(['pip', 'install', 'backports.tarfile'])
+    # 1. Remove RAPIDS packages that break everything
+    subprocess.run(['pip', 'uninstall', '-y', 'cudf', 'cuml', 'cupy-cuda11x', 'dask-cuda', 'dask-cudf', 'raft-dask', 'rmm'])
+
     # subprocess.run(['pip', 'install', '--upgrade', 'setuptools', 'jaraco.context'])
-    subprocess.run(['pip', 'install', 'scipy==1.10.1'])
+    # subprocess.run(['pip', 'install', 'scipy==1.10.1'])
 
     subprocess.run(['apt-get', '-y', 'install', 'build-essential', 'python3-dev', 'ffmpeg'])
     # subprocess.run(['pip', 'install', '--upgrade', 'setuptools', 'wheel', 'pip'])
+
+    # 11. Install RVC dependencies
     subprocess.run(['pip', 'install', 'faiss-cpu==1.7.2', 'fairseq', 'gradio==3.14.0', 'ffmpeg', 'ffmpeg-python', 'praat-parselmouth', 'pyworld', 'numba==0.56.4'])
     subprocess.run(['pip', 'install', 'torch', 'torchvision', 'torchaudio'])
+    subprocess.run(['pip', 'install', 'torchcrepe', 'resampy'])
 
     # Install additional packages
     subprocess.run(['pip', 'install', 'sounddevice'])
@@ -54,6 +60,29 @@ if RVC == "1":
     
     # Install remaining packages from requirements.txt
     subprocess.run(['pip', 'install', '-r', 'requirements.txt', '--use-deprecated=legacy-resolver'])
+
+    # 2. Remove broken shapely / packaging / scipy
+    subprocess.run(['pip', 'uninstall', '-y', 'shapely', 'packaging', 'scipy', 'librosa', 'numba', 'numpy', 'pyarrow'])
+
+    # 3. Install required base stack for RVC
+    subprocess.run(['pip', 'install', 'packaging==23.1'])
+    # 4. Install a numpy version compatible with librosa & scipy
+    subprocess.run(['pip', 'install', 'numpy==1.23.5'])
+    # 5. Install scipy compatible with numpy 1.23.5
+    subprocess.run(['pip', 'install', 'scipy==1.10.1'])
+    # 6. Install librosa with correct dependency matrix
+    subprocess.run(['pip', 'install', 'librosa==0.9.2'])
+    # 9. Install numba version compatible with numpy
+    subprocess.run(['pip', 'install', 'numba==0.56.4'])
+    # 10. Clean shapely for geospatial packages
+    subprocess.run(['pip', 'install', 'shapely==2.0.2'])
+
+    # 11. Install RVC dependencies (DOUBLE CHECK)
+    subprocess.run(['pip', 'install', 'faiss-cpu==1.7.2', 'fairseq', 'gradio==3.14.0', 'ffmpeg', 'ffmpeg-python', 'praat-parselmouth', 'pyworld', 'numba==0.56.4'])
+    subprocess.run(['pip', 'install', 'torch', 'torchvision', 'torchaudio'])
+    subprocess.run(['pip', 'install', 'torchcrepe', 'resampy'])
+    subprocess.run(['pip', 'install', 'backports.tarfile'])
+
     subprocess.run(['python', 'tools/download_models.py'])
 
 if RVC == "2":
@@ -194,5 +223,6 @@ if RVC == "4":
 
 
 print("Finished Running cell, continue to next cell.")
+
 
 
