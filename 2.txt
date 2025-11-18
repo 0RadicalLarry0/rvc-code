@@ -6,11 +6,10 @@ from distutils.dir_util import copy_tree
 if RVC == "1":
     # Mainline
     # 2.2.231006
-    branch_name = '2.2.231006'
-    url = 'https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI'
+    branch_name = 'custom'
+    url = 'https://github.com/0RadicalLarry0/Retrieval-based-Voice-Conversion-WebUI'
     try:
         subprocess.run(["git", "clone", "-b", branch_name, "--single-branch", "--depth", "1", url, "."], check=True)
-        subprocess.run(["git", "restore", "--source", "main", "infer/lib/audio.py"])
         print("Git clone successful")
     except subprocess.CalledProcessError as e:
         print(f"Error during Git clone: {e}")
@@ -179,6 +178,7 @@ elif RVC == "4":
         print("Git clone successful")
     except subprocess.CalledProcessError as e:
         print(f"Error during Git clone: {e}")
+
 
 
 
