@@ -12,7 +12,7 @@ if RVC == "1":
     subprocess.run(['virtualenv', 'venv'])
 
     # 1. Remove RAPIDS packages that break everything
-    subprocess.run(['pip', 'uninstall', '-y', 'cudf', 'cuml', 'cupy-cuda11x', 'dask-cuda', 'dask-cudf', 'raft-dask', 'rmm'])
+    subprocess.run(['pip', 'uninstall', '-y', 'cudf', 'cuml', 'cupy-cuda11x', 'dask-cuda', 'dask-cudf', 'raft-dask']) # , 'rmm'])
 
     # subprocess.run(['pip', 'install', '--upgrade', 'setuptools', 'jaraco.context'])
     # subprocess.run(['pip', 'install', 'scipy==1.10.1'])
@@ -33,7 +33,7 @@ if RVC == "1":
     subprocess.run(['pip', 'install', 'noisereduce'])
     subprocess.run(['pip', 'install', 'pyngrok'])
     subprocess.run(['pip', 'install', 'tensorflow'])
-    subprocess.run(['pip', 'install', 'av'])
+    subprocess.run(['pip', 'install', 'av==10.0.0'])
 
     # Clear output
     subprocess.run(['clear'])
@@ -208,6 +208,7 @@ if RVC == "4":
 
 
 print("Finished Running cell, continue to next cell.")
+
 
 
 
