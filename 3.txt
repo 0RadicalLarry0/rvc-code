@@ -8,7 +8,7 @@ if RVC == "1":
 
     subprocess.run(['apt-get', 'update', '--fix-missing'])
 
-	subprocess.run([
+    subprocess.run([
         "apt-get", "install", "-y",
         "ffmpeg", "pkg-config",
         "libavcodec-dev", "libavformat-dev", "libavutil-dev",
@@ -221,6 +221,7 @@ if RVC == "4":
 
 
 print("Finished Running cell, continue to next cell.")
+
 
 
 
