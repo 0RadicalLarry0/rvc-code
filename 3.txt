@@ -67,7 +67,7 @@ if RVC == "1":
     # subprocess.run(['pip', 'install', 'torch', 'torchvision', 'torchaudio'])
     # subprocess.run(['pip', 'install', 'torchcrepe', 'resampy'])
 
-    subprocess.run(['pip', 'install', 'av==9.2.0', '--force-reinstall', '--no-binary', 'av'])
+    subprocess.run(['pip', 'install', 'av==9.2.0', '--force-reinstall'])
 
     subprocess.run(['python', 'tools/download_models.py'])
 
@@ -209,6 +209,7 @@ if RVC == "4":
 
 
 print("Finished Running cell, continue to next cell.")
+
 
 
 
