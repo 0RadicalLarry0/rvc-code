@@ -10,6 +10,7 @@ if RVC == "1":
     url = 'https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI'
     try:
         subprocess.run(["git", "clone", "-b", branch_name, "--single-branch", "--depth", "1", url, "."], check=True)
+        subprocess.run(["git", "checkout", "main", "infer/lib/audio.py"])
         print("Git clone successful")
     except subprocess.CalledProcessError as e:
         print(f"Error during Git clone: {e}")
@@ -178,5 +179,6 @@ elif RVC == "4":
         print("Git clone successful")
     except subprocess.CalledProcessError as e:
         print(f"Error during Git clone: {e}")
+
 
 
