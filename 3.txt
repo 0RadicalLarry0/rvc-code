@@ -33,7 +33,6 @@ if RVC == "1":
     subprocess.run(['pip', 'install', 'noisereduce'])
     subprocess.run(['pip', 'install', 'pyngrok'])
     subprocess.run(['pip', 'install', 'tensorflow'])
-    subprocess.run(['pip', 'install', 'av==10.0.0'])
 
     # Clear output
     subprocess.run(['clear'])
@@ -67,6 +66,8 @@ if RVC == "1":
     # subprocess.run(['pip', 'install', 'faiss-cpu==1.7.2', 'fairseq', 'gradio==3.14.0', 'ffmpeg', 'ffmpeg-python', 'praat-parselmouth', 'pyworld', 'numba==0.56.4'])
     # subprocess.run(['pip', 'install', 'torch', 'torchvision', 'torchaudio'])
     # subprocess.run(['pip', 'install', 'torchcrepe', 'resampy'])
+
+    subprocess.run(['pip', 'install', 'av==10.0.0', '--force-reinstall'])
 
     subprocess.run(['python', 'tools/download_models.py'])
 
@@ -208,6 +209,7 @@ if RVC == "4":
 
 
 print("Finished Running cell, continue to next cell.")
+
 
 
 
